@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Requirement Form</title>
+  <style>
+    :root{--brand:#172554;--brand2:#2563eb;--ink:#172033;--muted:#667085;--line:#e4e7ec;--bg:#f4f7fb;--card:#fff;--success:#16805a}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    .topbar{height:68px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:20}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800}.brandmark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#fff4,#fff);display:grid;place-items:center;border:1px solid #ffffff55}
+    .saved{font-size:12px;color:#dbe5ff}.shell{max-width:1120px;margin:24px auto;padding:0 18px 50px}
+    .progress-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}.progress-meta{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:9px}.bar{height:7px;border-radius:99px;background:#e9edf5;overflow:hidden}.bar>div{height:100%;width:20%;background:var(--brand2);transition:.25s}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 8px 24px #1d29391a}.section{display:none}.section.active{display:block}.section-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}.stepnum{min-width:38px;height:38px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}.section h2{font-size:21px;margin:1px 0 4px}.section-sub{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.span2{grid-column:1/-1} label.field>span,.label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.req{color:#dc2626} input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:11px 12px;font-size:14px;background:#fff;color:var(--ink);outline:none} input:focus,select:focus,textarea:focus{border-color:var(--brand2);box-shadow:0 0 0 3px #2563eb18}textarea{min-height:88px;resize:vertical}
+    .swatches{display:flex;gap:9px;flex-wrap:wrap}.swatch{width:42px;height:42px;border-radius:10px;border:3px solid #fff;box-shadow:0 0 0 1px #cfd4dc;cursor:pointer}.swatch.selected{box-shadow:0 0 0 3px var(--brand2)}.hexwrap{display:flex;align-items:center;gap:8px}.hexwrap input{width:120px}
+    .crm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.crm-card{border:1.5px solid var(--line);border-radius:12px;padding:17px;cursor:pointer;transition:.18s}.crm-card:hover{border-color:#98a2b3}.crm-card.selected{border-color:var(--brand2);background:#f7f9ff;box-shadow:0 0 0 3px #2563eb12}.crm-card input{width:auto}.crm-title{font-size:15px;font-weight:800;margin:5px 0}.crm-desc{font-size:12px;color:var(--muted);line-height:1.55}
+    .checks{display:flex;flex-wrap:wrap;gap:9px}.check{border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:13px;background:#fff}.check input{width:auto;margin-right:7px}.tagbox{display:flex;gap:8px;margin-top:10px}.tagbox input{flex:1}.btn{border:0;border-radius:9px;padding:11px 16px;font-weight:800;font-size:13px;cursor:pointer}.btn-primary{background:var(--brand);color:#fff}.btn-primary:hover{background:#0f1d43}.btn-secondary{background:#eef2f7;color:#344054}.btn-green{background:var(--success);color:#fff}.btn-outline{background:#fff;border:1px solid #d0d5dd;color:#344054}.btn-danger{background:#fff1f1;color:#b42318;border:1px solid #fecaca}
+    .column-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.column-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:8px;padding:9px}.column-item label{font-size:13px}.remove-col{border:0;background:transparent;color:#b42318;cursor:pointer;font-weight:800}
+    .navrow{display:flex;justify-content:space-between;margin-top:22px}.sample-row{display:flex;gap:8px}.sample-row input{flex:1}.error{color:#b42318;font-size:12px;margin-top:5px;display:none}.invalid{border-color:#dc2626!important}.toast{position:fixed;right:20px;bottom:20px;background:#101828;color:#fff;padding:12px 16px;border-radius:9px;font-size:13px;opacity:0;transform:translateY(10px);transition:.2s;z-index:50}.toast.show{opacity:1;transform:none}
+    .confirm{text-align:center;padding:18px 8px}.confirm-icon{width:70px;height:70px;border-radius:50%;background:#ecfdf3;color:#087a55;display:grid;place-items:center;margin:0 auto 15px;font-size:34px}.confirm h2{margin:8px 0}.confirm p{color:var(--muted)}.output-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.output-actions .btn{min-height:56px}.summary-preview{margin-top:20px;text-align:left;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:15px;max-height:220px;overflow:auto;font-size:12px;white-space:pre-wrap}
+    @media(max-width:760px){.topbar{padding:0 14px}.saved{display:none}.shell{padding:0 10px 30px}.card{padding:18px 14px}.grid,.grid-3,.crm-grid,.column-list,.output-actions{grid-template-columns:1fr}.swatches{gap:7px}.navrow{gap:8px}.navrow .btn{flex:1}.progress-wrap{padding:13px}.output-actions{gap:8px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="brand"><div class="brandmark">CRM</div><span>Client Onboarding Portal</span></div><div class="saved" id="savedStatus">● Saved locally</div></header>
+  <main class="shell">
+    <div class="progress-wrap"><div class="progress-meta"><span id="progressLabel">Section 1 of 5</span><span id="progressText">20%</span></div><div class="bar"><div id="progressBar"></div></div></div>
+    <form id="intakeForm">
+      <section class="card section active" data-section="1">
+        <div class="section-head"><div class="stepnum">01</div><div><h2>Client Business & Branding</h2><div class="section-sub">Tell us about the company and visual identity.</div></div></div>
+        <div class="grid"><label class="field"><span>Company / Brand Name <b class="req">*</b></span><input id="company" required placeholder="e.g. Prana Pure Solutions"><div class="error">Please enter a company name.</div></label>
+          <label class="field"><span>Business Industry</span><select id="industry"><option>Trading / Manufacturing</option><option>Real Estate</option><option>Education / Coaching</option><option>Healthcare / Clinic</option><option>IT / Agency / Services</option><option>E-Commerce / Retail</option><option>Other</option></select></label>
+          <label class="field span2"><span>Brand Color Theme</span><div class="swatches"><div class="swatch selected" data-color="#172554" data-name="Corporate Navy" style="background:#172554" title="Corporate Navy"></div><div class="swatch" data-color="#047857" data-name="Emerald Green" style="background:#047857" title="Emerald Green"></div><div class="swatch" data-color="#6d28d9" data-name="Royal Purple" style="background:#6d28d9" title="Royal Purple"></div><div class="swatch" data-color="#111827" data-name="Dark Executive" style="background:#111827" title="Dark Executive"></div></div><div class="hexwrap" style="margin-top:10px"><span style="font-size:12px;color:var(--muted)">Custom Hex</span><input id="customHex" type="text" value="#172554" maxlength="7" placeholder="#172554"></div></label>
+        </div>
+      </section>
+
+      <section class="card section" data-section="2">
+        <div class="section-head"><div class="stepnum">02</div><div><h2>Select CRM Architecture</h2><div class="section-sub">Choose a model. Smart defaults can be edited in Section 4.</div></div></div>
+        <div class="crm-grid" id="crmTypes">
+          <label class="crm-card selected"><input type="radio" name="crmType" value="Operational Sales & Order CRM" checked><div class="crm-title">A — Operational Sales & Order CRM</div><div class="crm-desc">Enquiries, Quotes, Orders, Stock / Dispatch, MD Daily Reports</div></label>
+          <label class="crm-card"><input type="radio" name="crmType" value="Lead & Follow-up CRM (Lite)"><div class="crm-title">B — Lead & Follow-up CRM (Lite)</div><div class="crm-desc">Leads, Hot / Warm / Cold Status, Follow-up Date, Call Notes, Conversion Rate</div></label>
+          <label class="crm-card"><input type="radio" name="crmType" value="Customer Service & Support Ticket CRM"><div class="crm-title">C — Customer Service & Support Ticket CRM</div><div class="crm-desc">Complaints, Priority, Assigned Engineer, SLA Timer, Resolution Status</div></label>
+          <label class="crm-card"><input type="radio" name="crmType" value="Analytical / Custom CRM"><div class="crm-title">D — Analytical / Custom CRM</div><div class="crm-desc">Custom workflow and KPI dashboard based on your exact columns</div></label>
+        </div>
+      </section>
+
+      <section class="card section" data-section="3">
+        <div class="section-head"><div class="stepnum">03</div><div><h2>Leadership & Team Hierarchy</h2><div class="section-sub">Define accountability and reporting structure.</div></div></div>
+        <div class="grid"><label class="field"><span>Managing Director / Owner Name</span><input id="mdName" placeholder="Owner name"></label><label class="field"><span>Reporting Manager Name</span><input id="managerName" placeholder="Optional"></label><label class="field"><span>Director Name <small>(Optional)</small></span><input id="directorName" placeholder="Director name"></label><label class="field"><span>Active Team Members / Executives</span><input id="team" placeholder="Rahul, Priya, Amit"></label></div>
+      </section>
+
+      <section class="card section" data-section="4">
+        <div class="section-head"><div class="stepnum">04</div><div><h2>Lead Sources, Columns & Business Rules</h2><div class="section-sub">Shape the CRM fields and realistic starter data.</div></div></div>
+        <div class="grid"><div><span class="label">Lead Sources</span><div class="checks" id="leadSources"><label class="check"><input type="checkbox" value="WhatsApp" checked>WhatsApp</label><label class="check"><input type="checkbox" value="Email">Email</label><label class="check"><input type="checkbox" value="Verbal / Phone Call">Verbal / Phone</label><label class="check"><input type="checkbox" value="Website">Website</label><label class="check"><input type="checkbox" value="Instagram / Facebook">Instagram / Facebook</label><label class="check"><input type="checkbox" value="Walk-in">Walk-in</label></div><div class="tagbox"><input id="customSource" placeholder="Add another source"><button type="button" class="btn btn-secondary" id="addSource">Add</button></div><div id="extraSources" style="margin-top:8px"></div></div>
+          <div><span class="label">Custom Columns Checklist</span><div class="column-list" id="columnList"></div><div class="tagbox"><input id="customColumn" placeholder="Add exact field name"><button type="button" class="btn btn-secondary" id="addColumn">Add</button></div></div>
+          <div class="span2"><span class="label">Sample Products / Services <small>(3–4 real items)</small></span><div id="samples"></div><button type="button" class="btn btn-danger" id="clearSamples" style="margin-top:9px">🗑️ Clear Sample Data</button></div>
+          <label class="field span2"><span>Special Business Rules</span><textarea id="rules" placeholder="Reply within 2 hours&#10;Mandatory follow-up date&#10;Manager approval required above ₹50,000"></textarea></label>
+        </div>
+      </section>
+
+      <section class="card section" data-section="5">
+        <div class="confirm"><div class="confirm-icon">✓</div><h2>Requirements Ready</h2><p>Your CRM blueprint is complete and ready to share.</p><div class="output-actions"><button type="button" class="btn btn-primary" id="downloadBtn">📥 Download Requirements (.txt)</button><button type="button" class="btn btn-green" id="whatsappBtn">💬 Send via WhatsApp</button><button type="button" class="btn btn-outline" id="copyBtn">🤖 Copy Copilot Prompt</button></div><div class="summary-preview" id="summaryPreview"></div></div>
+      </section>
+      <div class="navrow" id="navrow"><button type="button" class="btn btn-secondary" id="prevBtn" disabled>← Previous</button><button type="button" class="btn btn-primary" id="nextBtn">Next →</button></div>
+    </form>
+  </main>
+  <div class="toast" id="toast">Copied</div>
+<script>
+(function(){
+const state={step:1,theme:{name:'Corporate Navy',color:'#172554'}};
+const defaults={
+ 'Operational Sales & Order CRM':['Entry ID','Company','Contact Person','Phone','Product','Quantity','Quote Amount','Order Status','Stock / Dispatch','Executive','Next Follow-up','Remarks'],
+ 'Lead & Follow-up CRM (Lite)':['Lead ID','Name','Phone','Lead Source','Status','Follow-up Date','Call Notes','Executive','Conversion','Remarks'],
+ 'Customer Service & Support Ticket CRM':['Ticket ID','Customer','Phone','Complaint','Priority','Assigned Engineer','SLA Due','Resolution Status','Resolution Notes'],
+ 'Analytical / Custom CRM':['Record ID','Name','Category','Value','Status','Owner','Date','KPI','Notes']};
+function selectedType(){return document.querySelector('input[name="crmType"]:checked').value}
+function renderColumns(){const list=document.getElementById('columnList');list.innerHTML='';defaults[selectedType()].concat(extraColumns).forEach((col,i)=>{const d=document.createElement('div');d.className='column-item';d.innerHTML='<label><input type="checkbox" checked data-column="'+escapeAttr(col)+'"> '+escapeHtml(col)+'</label><span></span>';if(extraColumns.includes(col)){d.querySelector('span').innerHTML='<button type="button" class="remove-col" data-remove="'+escapeAttr(col)+'">×</button>'}list.appendChild(d)})}
+let extraColumns=[];let extraSources=[];
+function renderSamples(){const box=document.getElementById('samples');if(!box.children.length) for(let i=0;i<4;i++){let row=document.createElement('div');row.className='sample-row';row.style.marginBottom='7px';row.innerHTML='<input class="sample" placeholder="Product / service '+(i+1)+'">';box.appendChild(row)}}
+renderSamples();renderColumns();
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":"&#39;",'"':'&quot;'}[c]))}function escapeAttr(s){return escapeHtml(s)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function setStep(n){state.step=n;document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',+s.dataset.section===n));document.getElementById('progressLabel').textContent=n===5?'Smart Output Engine':('Section '+n+' of 5');document.getElementById('progressText').textContent=(n*20)+'%';document.getElementById('progressBar').style.width=(n*20)+'%';document.getElementById('prevBtn').disabled=n===1;document.getElementById('nextBtn').style.display=n===5?'none':'inline-block';if(n===5)buildOutput();window.scrollTo({top:0,behavior:'smooth'})}
+function validate(){if(state.step===1){const c=document.getElementById('company');if(!c.value.trim()){c.classList.add('invalid');c.nextElementSibling.style.display='block';c.focus();return false}c.classList.remove('invalid');c.nextElementSibling.style.display='none'}return true}
+document.getElementById('nextBtn').onclick=()=>{if(validate())setStep(Math.min(5,state.step+1))};document.getElementById('prevBtn').onclick=()=>setStep(Math.max(1,state.step-1));
+document.querySelectorAll('.crm-card').forEach(card=>card.onclick=()=>{document.querySelectorAll('.crm-card').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');card.querySelector('input').checked=true;extraColumns=[];renderColumns()});
+document.querySelectorAll('.swatch').forEach(s=>s.onclick=()=>{document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');state.theme={name:s.dataset.name,color:s.dataset.color};document.getElementById('customHex').value=s.dataset.color;applyTheme(s.dataset.color)});
+document.getElementById('customHex').oninput=e=>{const v=e.target.value;if(/^#[0-9a-f]{6}$/i.test(v)){state.theme={name:'Custom Hex',color:v};applyTheme(v)}};function applyTheme(c){document.documentElement.style.setProperty('--brand',c)}
+document.getElementById('addSource').onclick=()=>{const i=document.getElementById('customSource'),v=i.value.trim();if(v&&!extraSources.includes(v)){extraSources.push(v);const l=document.createElement('label');l.className='check';l.innerHTML='<input type="checkbox" value="'+escapeAttr(v)+'" checked> '+escapeHtml(v);document.getElementById('extraSources').appendChild(l);i.value=''}};
+document.getElementById('addColumn').onclick=()=>{const i=document.getElementById('customColumn'),v=i.value.trim();if(v&&!extraColumns.includes(v)&&!defaults[selectedType()].includes(v)){extraColumns.push(v);i.value='';renderColumns()}};
+document.getElementById('columnList').onclick=e=>{if(e.target.matches('[data-remove]')){extraColumns=extraColumns.filter(x=>x!==e.target.dataset.remove);renderColumns()}};
+document.getElementById('clearSamples').onclick=()=>{if(confirm('Clear all sample products/services?'))document.querySelectorAll('.sample').forEach(i=>i.value='')};
+function dataObject(){const cols=[...document.querySelectorAll('#columnList input[data-column]')].filter(i=>i.checked).map(i=>i.dataset.column);const sources=[...document.querySelectorAll('#leadSources input:checked,#extraSources input:checked')].map(i=>i.value);return{company:document.getElementById('company').value.trim(),industry:document.getElementById('industry').value,theme:state.theme,crmType:selectedType(),mdName:document.getElementById('mdName').value.trim(),managerName:document.getElementById('managerName').value.trim(),directorName:document.getElementById('directorName').value.trim(),team:document.getElementById('team').value.trim(),leadSources:sources,columns:cols,samples:[...document.querySelectorAll('.sample')].map(i=>i.value.trim()).filter(Boolean),rules:document.getElementById('rules').value.trim(),generatedAt:new Date().toISOString()}}
+function txtSummary(d){return `CRM REQUIREMENT BLUEPRINT\n=========================\nCompany: ${d.company}\nIndustry: ${d.industry}\nBrand Theme: ${d.theme.name} (${d.theme.color})\nCRM Type: ${d.crmType}\nGenerated: ${d.generatedAt}\n\nLEADERSHIP\nMD / Owner: ${d.mdName||'-'}\nReporting Manager: ${d.managerName||'-'}\nDirector: ${d.directorName||'-'}\nTeam: ${d.team||'-'}\n\nLEAD SOURCES\n${d.leadSources.join(', ')||'-'}\n\nTRACKER COLUMNS\n${d.columns.join(', ')||'-'}\n\nSAMPLE PRODUCTS / SERVICES\n${d.samples.join(', ')||'-'}\n\nSPECIAL BUSINESS RULES\n${d.rules||'-'}\n`}
+function masterPrompt(d){return `Act as a Principal Enterprise Software Architect with 50 years of experience. Build a 100% bug-free, production-ready, standalone single-file HTML Desktop CRM Application customized for the client requirements below. Do not remove the master architecture.
+
+STRICT MASTER CRM RULES:
+1. Build a 5-tab interconnected desktop CRM: 01 Team CRM Tracker; 02 Daily Management Report; 03 Daily History Log; 04 Weekly & Monthly Summary; 05 Settings & Quick Rules.
+2. Keep always-visible toolbar buttons: Add New Entry, Export CSV, Export Excel (.xls), Backup (.json), Restore (.json), and Clear Sample Data (Start Fresh).
+3. Add live search and filters, inline dropdown editing, row delete, automatic Entry IDs, date/report calculations, persistent localStorage under a unique company-based key, and exactly 4 realistic dummy records tailored to the client.
+4. Include clean single-file CSS/JS with zero external dependencies and offline desktop readiness.
+
+CLIENT REQUIREMENTS:
+${txtSummary(d)}
+
+IMPLEMENTATION RULES:
+- Use the selected CRM architecture as the primary workflow.
+- Use the supplied columns and lead sources exactly unless a field is technically unsafe; explain substitutions in code comments.
+- Apply the selected brand theme and industry-specific terminology.
+- Preload only the 4 sample records using the supplied products/services.
+- Make every tab work, calculate reports, preserve data, and validate new entries.
+- Produce the complete standalone HTML file, ready to save and open directly in a browser.`}
+let currentPrompt='',currentSummary='';function buildOutput(){const d=dataObject();currentSummary=txtSummary(d);currentPrompt=masterPrompt(d);document.getElementById('summaryPreview').textContent=currentSummary}
+document.getElementById('downloadBtn').onclick=()=>{if(!currentSummary)buildOutput();const d=dataObject();const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(d.company||'client')+'-CRM-Requirements.json';a.click();URL.revokeObjectURL(a.href)};
+document.getElementById('copyBtn').onclick=async()=>{if(!currentPrompt)buildOutput();try{await navigator.clipboard.writeText(currentPrompt);toast('Copilot-ready prompt copied')}catch(e){const ta=document.createElement('textarea');ta.value=currentPrompt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Copilot-ready prompt copied')}};
+document.getElementById('whatsappBtn').onclick=()=>{if(!currentSummary)buildOutput();window.open('https://wa.me/?text='+encodeURIComponent(currentSummary),'_blank','noopener')};
+})();
+</script>
+</body>
+</html>
