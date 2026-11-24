@@ -1,121 +1,533 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRM Requirement Form</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title>Client Project Intake</title>
   <style>
-    :root{--brand:#172554;--brand2:#2563eb;--ink:#172033;--muted:#667085;--line:#e4e7ec;--bg:#f4f7fb;--card:#fff;--success:#16805a}
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-    .topbar{height:68px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:20}
-    .brand{display:flex;align-items:center;gap:11px;font-weight:800}.brandmark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#fff4,#fff);display:grid;place-items:center;border:1px solid #ffffff55}
-    .saved{font-size:12px;color:#dbe5ff}.shell{max-width:1120px;margin:24px auto;padding:0 18px 50px}
-    .progress-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:18px}.progress-meta{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:9px}.bar{height:7px;border-radius:99px;background:#e9edf5;overflow:hidden}.bar>div{height:100%;width:20%;background:var(--brand2);transition:.25s}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 8px 24px #1d29391a}.section{display:none}.section.active{display:block}.section-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}.stepnum{min-width:38px;height:38px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}.section h2{font-size:21px;margin:1px 0 4px}.section-sub{color:var(--muted);font-size:13px}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.span2{grid-column:1/-1} label.field>span,.label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.req{color:#dc2626} input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:11px 12px;font-size:14px;background:#fff;color:var(--ink);outline:none} input:focus,select:focus,textarea:focus{border-color:var(--brand2);box-shadow:0 0 0 3px #2563eb18}textarea{min-height:88px;resize:vertical}
-    .swatches{display:flex;gap:9px;flex-wrap:wrap}.swatch{width:42px;height:42px;border-radius:10px;border:3px solid #fff;box-shadow:0 0 0 1px #cfd4dc;cursor:pointer}.swatch.selected{box-shadow:0 0 0 3px var(--brand2)}.hexwrap{display:flex;align-items:center;gap:8px}.hexwrap input{width:120px}
-    .crm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.crm-card{border:1.5px solid var(--line);border-radius:12px;padding:17px;cursor:pointer;transition:.18s}.crm-card:hover{border-color:#98a2b3}.crm-card.selected{border-color:var(--brand2);background:#f7f9ff;box-shadow:0 0 0 3px #2563eb12}.crm-card input{width:auto}.crm-title{font-size:15px;font-weight:800;margin:5px 0}.crm-desc{font-size:12px;color:var(--muted);line-height:1.55}
-    .checks{display:flex;flex-wrap:wrap;gap:9px}.check{border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:13px;background:#fff}.check input{width:auto;margin-right:7px}.tagbox{display:flex;gap:8px;margin-top:10px}.tagbox input{flex:1}.btn{border:0;border-radius:9px;padding:11px 16px;font-weight:800;font-size:13px;cursor:pointer}.btn-primary{background:var(--brand);color:#fff}.btn-primary:hover{background:#0f1d43}.btn-secondary{background:#eef2f7;color:#344054}.btn-green{background:var(--success);color:#fff}.btn-outline{background:#fff;border:1px solid #d0d5dd;color:#344054}.btn-danger{background:#fff1f1;color:#b42318;border:1px solid #fecaca}
-    .column-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.column-item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:8px;padding:9px}.column-item label{font-size:13px}.remove-col{border:0;background:transparent;color:#b42318;cursor:pointer;font-weight:800}
-    .navrow{display:flex;justify-content:space-between;margin-top:22px}.sample-row{display:flex;gap:8px}.sample-row input{flex:1}.error{color:#b42318;font-size:12px;margin-top:5px;display:none}.invalid{border-color:#dc2626!important}.toast{position:fixed;right:20px;bottom:20px;background:#101828;color:#fff;padding:12px 16px;border-radius:9px;font-size:13px;opacity:0;transform:translateY(10px);transition:.2s;z-index:50}.toast.show{opacity:1;transform:none}
-    .confirm{text-align:center;padding:18px 8px}.confirm-icon{width:70px;height:70px;border-radius:50%;background:#ecfdf3;color:#087a55;display:grid;place-items:center;margin:0 auto 15px;font-size:34px}.confirm h2{margin:8px 0}.confirm p{color:var(--muted)}.output-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.output-actions .btn{min-height:56px}.summary-preview{margin-top:20px;text-align:left;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:15px;max-height:220px;overflow:auto;font-size:12px;white-space:pre-wrap}
-    @media(max-width:760px){.topbar{padding:0 14px}.saved{display:none}.shell{padding:0 10px 30px}.card{padding:18px 14px}.grid,.grid-3,.crm-grid,.column-list,.output-actions{grid-template-columns:1fr}.swatches{gap:7px}.navrow{gap:8px}.navrow .btn{flex:1}.progress-wrap{padding:13px}.output-actions{gap:8px}}
+    :root {
+      --bg: #eef3f9;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #14213d;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-2: #1d4ed8;
+      --border: #dde5ef;
+      --success: #15803d;
+      --shadow: 0 18px 50px rgba(15, 23, 42, .10);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, .10), transparent 28rem),
+        linear-gradient(135deg, #f8fafc 0%, var(--bg) 100%);
+    }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 28px auto; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 44px; height: 44px; border-radius: 14px;
+      display: grid; place-items: center; color: #fff;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, .22);
+      font-weight: 800;
+    }
+    .brand h1 { margin: 0; font-size: clamp(18px, 2vw, 22px); }
+    .brand p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+    .progress {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      width: min(390px, 45%); margin-bottom: 16px;
+    }
+    .progress span { height: 5px; border-radius: 999px; background: #dbe4ef; transition: .25s ease; }
+    .progress span.active { background: var(--primary); }
+    .card {
+      background: rgba(255, 255, 255, .96); border: 1px solid rgba(255,255,255,.8);
+      border-radius: 24px; box-shadow: var(--shadow); padding: clamp(20px, 4vw, 38px);
+    }
+    .step { display: none; animation: enter .28s ease; }
+    .step.active { display: block; }
+    @keyframes enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .eyebrow { color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { margin: 7px 0 8px; font-size: clamp(24px, 3vw, 34px); letter-spacing: -.035em; }
+    .intro { margin: 0 0 24px; color: var(--muted); line-height: 1.65; }
+    .service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .service-card {
+      appearance: none; text-align: left; color: var(--text);
+      min-height: 170px; border: 1px solid var(--border); border-radius: 18px;
+      background: var(--surface-2); padding: 18px;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      display: flex; flex-direction: column;
+    }
+    .service-card:hover { transform: translateY(-3px); border-color: #a7b9d2; box-shadow: 0 12px 28px rgba(15,23,42,.08); }
+    .service-card.selected { border: 2px solid var(--primary); background: #eff6ff; padding: 17px; }
+    .service-icon {
+      width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+      background: #e2eaff; color: var(--primary); margin-bottom: 13px; font-size: 18px;
+    }
+    .service-card strong { font-size: 16px; line-height: 1.35; }
+    .service-card small { color: var(--muted); margin-top: auto; padding-top: 14px; line-height: 1.45; }
+    .section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .section-title .number {
+      width: 30px; height: 30px; border-radius: 50%; background: var(--primary);
+      color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800;
+    }
+    .section-title h3 { margin: 0; font-size: 17px; }
+    .pill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 26px; }
+    .option {
+      position: relative; display: block;
+    }
+    .option input { position: absolute; opacity: 0; pointer-events: none; }
+    .option span {
+      min-height: 52px; border: 1px solid var(--border); border-radius: 13px;
+      background: var(--surface-2); display: flex; align-items: center;
+      padding: 12px 14px 12px 44px; transition: .18s ease; line-height: 1.35;
+    }
+    .option span::before {
+      content: ""; position: absolute; left: 16px; width: 16px; height: 16px;
+      border: 2px solid #aab7c8; border-radius: 5px; background: #fff;
+    }
+    .option input:checked + span { border-color: var(--primary); background: #eff6ff; color: var(--primary-2); font-weight: 700; }
+    .option input:checked + span::before { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px #fff; }
+    .question-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 13px; font-weight: 800; }
+    .field input, .field textarea, .field select {
+      width: 100%; border: 1px solid var(--border); border-radius: 12px;
+      background: #fff; color: var(--text); padding: 13px 14px; outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    .field textarea { min-height: 92px; resize: vertical; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+    .assurance {
+      grid-column: 1 / -1; border: 1px solid #bbf7d0; border-radius: 14px;
+      background: #f0fdf4; color: #166534; padding: 14px 16px;
+      font-weight: 800; line-height: 1.45;
+    }
+    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+    .btn {
+      border: 0; border-radius: 12px; min-height: 48px; padding: 12px 18px;
+      font-weight: 800; transition: .18s ease;
+    }
+    .btn-secondary { border: 1px solid var(--border); background: #fff; color: var(--text); }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 10px 22px rgba(37,99,235,.20); }
+    .btn-primary:hover { background: var(--primary-2); transform: translateY(-1px); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .brief {
+      white-space: pre-wrap; border: 1px solid var(--border); border-radius: 16px;
+      background: #f8fafc; padding: clamp(16px,3vw,24px); line-height: 1.65;
+      margin: 0 0 16px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 14px;
+    }
+    .copy-status { min-height: 20px; color: var(--success); font-weight: 800; text-align: right; }
+    @media (max-width: 900px) { .service-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 20px, 1180px); margin: 14px auto; }
+      .topbar { align-items: flex-end; }
+      .brand p { display: none; }
+      .progress { width: 42%; }
+      .card { border-radius: 18px; padding: 18px 14px; }
+      .service-grid, .pill-grid, .question-grid { grid-template-columns: 1fr; }
+      .service-card { min-height: 135px; }
+      .field.full, .assurance { grid-column: auto; }
+      .actions { flex-direction: column-reverse; }
+      .actions .btn { width: 100%; }
+    }
   </style>
 </head>
 <body>
-  <header class="topbar"><div class="brand"><div class="brandmark">CRM</div><span>Client Onboarding Portal</span></div><div class="saved" id="savedStatus">● Saved locally</div></header>
   <main class="shell">
-    <div class="progress-wrap"><div class="progress-meta"><span id="progressLabel">Section 1 of 5</span><span id="progressText">20%</span></div><div class="bar"><div id="progressBar"></div></div></div>
-    <form id="intakeForm">
-      <section class="card section active" data-section="1">
-        <div class="section-head"><div class="stepnum">01</div><div><h2>Client Business & Branding</h2><div class="section-sub">Tell us about the company and visual identity.</div></div></div>
-        <div class="grid"><label class="field"><span>Company / Brand Name <b class="req">*</b></span><input id="company" required placeholder="e.g. Prana Pure Solutions"><div class="error">Please enter a company name.</div></label>
-          <label class="field"><span>Business Industry</span><select id="industry"><option>Trading / Manufacturing</option><option>Real Estate</option><option>Education / Coaching</option><option>Healthcare / Clinic</option><option>IT / Agency / Services</option><option>E-Commerce / Retail</option><option>Other</option></select></label>
-          <label class="field span2"><span>Brand Color Theme</span><div class="swatches"><div class="swatch selected" data-color="#172554" data-name="Corporate Navy" style="background:#172554" title="Corporate Navy"></div><div class="swatch" data-color="#047857" data-name="Emerald Green" style="background:#047857" title="Emerald Green"></div><div class="swatch" data-color="#6d28d9" data-name="Royal Purple" style="background:#6d28d9" title="Royal Purple"></div><div class="swatch" data-color="#111827" data-name="Dark Executive" style="background:#111827" title="Dark Executive"></div></div><div class="hexwrap" style="margin-top:10px"><span style="font-size:12px;color:var(--muted)">Custom Hex</span><input id="customHex" type="text" value="#172554" maxlength="7" placeholder="#172554"></div></label>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">P</div>
+        <div><h1>Project Intake</h1><p>Scope clearly. Build confidently.</p></div>
+      </div>
+      <div class="progress" aria-label="Form progress">
+        <span class="active"></span><span></span><span></span><span></span>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="step active" data-step="1">
+        <span class="eyebrow">Step 1 of 4</span>
+        <h2>What do you need built?</h2>
+        <p class="intro">Select one work requirement. The next step will show only the relevant formats and details.</p>
+        <div class="service-grid" id="serviceGrid"></div>
+        <div class="actions"><button class="btn btn-primary" id="toStep2" disabled>Continue</button></div>
+      </div>
+
+      <div class="step" data-step="2">
+        <span class="eyebrow">Step 2 of 4</span>
+        <h2 id="selectedTitle">Choose a format</h2>
+        <p class="intro">Select the closest format, then provide the skill-specific details.</p>
+        <div class="section-title"><span class="number">A</span><h3>Preferred format</h3></div>
+        <div class="pill-grid" id="formatOptions"></div>
+        <div class="section-title"><span class="number">B</span><h3 id="detailsTitle">Specific requirements</h3></div>
+        <div class="question-grid" id="skillQuestions"></div>
+        <div class="actions">
+          <button class="btn btn-secondary" data-back="1">Back</button>
+          <button class="btn btn-primary" id="toStep3" disabled>Continue</button>
         </div>
-      </section>
+      </div>
 
-      <section class="card section" data-section="2">
-        <div class="section-head"><div class="stepnum">02</div><div><h2>Select CRM Architecture</h2><div class="section-sub">Choose a model. Smart defaults can be edited in Section 4.</div></div></div>
-        <div class="crm-grid" id="crmTypes">
-          <label class="crm-card selected"><input type="radio" name="crmType" value="Operational Sales & Order CRM" checked><div class="crm-title">A — Operational Sales & Order CRM</div><div class="crm-desc">Enquiries, Quotes, Orders, Stock / Dispatch, MD Daily Reports</div></label>
-          <label class="crm-card"><input type="radio" name="crmType" value="Lead & Follow-up CRM (Lite)"><div class="crm-title">B — Lead & Follow-up CRM (Lite)</div><div class="crm-desc">Leads, Hot / Warm / Cold Status, Follow-up Date, Call Notes, Conversion Rate</div></label>
-          <label class="crm-card"><input type="radio" name="crmType" value="Customer Service & Support Ticket CRM"><div class="crm-title">C — Customer Service & Support Ticket CRM</div><div class="crm-desc">Complaints, Priority, Assigned Engineer, SLA Timer, Resolution Status</div></label>
-          <label class="crm-card"><input type="radio" name="crmType" value="Analytical / Custom CRM"><div class="crm-title">D — Analytical / Custom CRM</div><div class="crm-desc">Custom workflow and KPI dashboard based on your exact columns</div></label>
+      <div class="step" data-step="3">
+        <span class="eyebrow">Step 3 of 4</span>
+        <h2>Tell us the project essentials</h2>
+        <p class="intro">These details help confirm scope, ownership, and delivery timing.</p>
+        <div class="question-grid" id="commonFields">
+          <div class="field"><label for="clientName">Client Name / Company *</label><input id="clientName" required placeholder="Name or company"></div>
+          <div class="field"><label for="language">Preferred Language *</label><select id="language" required><option value="">Select language</option><option>English</option><option>Hindi</option><option>Marathi</option><option>Gujarati</option><option>Other</option></select></div>
+          <div class="field"><label for="timeline">Timeline *</label><input id="timeline" required placeholder="e.g. 10 working days"></div>
+          <div class="field full"><label for="notes">Additional Notes</label><textarea id="notes" placeholder="Add useful context, files, deadlines, or special requirements"></textarea></div>
+          <div class="assurance">✅ 0%-Loss Assurance: Exact Scope Confirmation + 7-Day Free Post-Delivery Support &amp; Data Backup Included</div>
         </div>
-      </section>
-
-      <section class="card section" data-section="3">
-        <div class="section-head"><div class="stepnum">03</div><div><h2>Leadership & Team Hierarchy</h2><div class="section-sub">Define accountability and reporting structure.</div></div></div>
-        <div class="grid"><label class="field"><span>Managing Director / Owner Name</span><input id="mdName" placeholder="Owner name"></label><label class="field"><span>Reporting Manager Name</span><input id="managerName" placeholder="Optional"></label><label class="field"><span>Director Name <small>(Optional)</small></span><input id="directorName" placeholder="Director name"></label><label class="field"><span>Active Team Members / Executives</span><input id="team" placeholder="Rahul, Priya, Amit"></label></div>
-      </section>
-
-      <section class="card section" data-section="4">
-        <div class="section-head"><div class="stepnum">04</div><div><h2>Lead Sources, Columns & Business Rules</h2><div class="section-sub">Shape the CRM fields and realistic starter data.</div></div></div>
-        <div class="grid"><div><span class="label">Lead Sources</span><div class="checks" id="leadSources"><label class="check"><input type="checkbox" value="WhatsApp" checked>WhatsApp</label><label class="check"><input type="checkbox" value="Email">Email</label><label class="check"><input type="checkbox" value="Verbal / Phone Call">Verbal / Phone</label><label class="check"><input type="checkbox" value="Website">Website</label><label class="check"><input type="checkbox" value="Instagram / Facebook">Instagram / Facebook</label><label class="check"><input type="checkbox" value="Walk-in">Walk-in</label></div><div class="tagbox"><input id="customSource" placeholder="Add another source"><button type="button" class="btn btn-secondary" id="addSource">Add</button></div><div id="extraSources" style="margin-top:8px"></div></div>
-          <div><span class="label">Custom Columns Checklist</span><div class="column-list" id="columnList"></div><div class="tagbox"><input id="customColumn" placeholder="Add exact field name"><button type="button" class="btn btn-secondary" id="addColumn">Add</button></div></div>
-          <div class="span2"><span class="label">Sample Products / Services <small>(3–4 real items)</small></span><div id="samples"></div><button type="button" class="btn btn-danger" id="clearSamples" style="margin-top:9px">🗑️ Clear Sample Data</button></div>
-          <label class="field span2"><span>Special Business Rules</span><textarea id="rules" placeholder="Reply within 2 hours&#10;Mandatory follow-up date&#10;Manager approval required above ₹50,000"></textarea></label>
+        <div class="actions">
+          <button class="btn btn-secondary" data-back="2">Back</button>
+          <button class="btn btn-primary" id="generateBrief">Generate Project Brief</button>
         </div>
-      </section>
+      </div>
 
-      <section class="card section" data-section="5">
-        <div class="confirm"><div class="confirm-icon">✓</div><h2>Requirements Ready</h2><p>Your CRM blueprint is complete and ready to share.</p><div class="output-actions"><button type="button" class="btn btn-primary" id="downloadBtn">📥 Download Requirements (.txt)</button><button type="button" class="btn btn-green" id="whatsappBtn">💬 Send via WhatsApp</button><button type="button" class="btn btn-outline" id="copyBtn">🤖 Copy Copilot Prompt</button></div><div class="summary-preview" id="summaryPreview"></div></div>
-      </section>
-      <div class="navrow" id="navrow"><button type="button" class="btn btn-secondary" id="prevBtn" disabled>← Previous</button><button type="button" class="btn btn-primary" id="nextBtn">Next →</button></div>
-    </form>
+      <div class="step" data-step="4">
+        <span class="eyebrow">Step 4 of 4</span>
+        <h2>Your project brief is ready</h2>
+        <p class="intro">Review the scope below, then copy and send it directly to your freelancer.</p>
+        <pre class="brief" id="briefOutput"></pre>
+        <div class="actions">
+          <button class="btn btn-secondary" data-back="3">Edit Details</button>
+          <button class="btn btn-primary" id="copyBrief">📋 Copy Project Brief &amp; Send to Freelancer</button>
+        </div>
+        <div class="copy-status" id="copyStatus" role="status"></div>
+      </div>
+    </section>
   </main>
-  <div class="toast" id="toast">Copied</div>
-<script>
-(function(){
-const state={step:1,theme:{name:'Corporate Navy',color:'#172554'}};
-const defaults={
- 'Operational Sales & Order CRM':['Entry ID','Company','Contact Person','Phone','Product','Quantity','Quote Amount','Order Status','Stock / Dispatch','Executive','Next Follow-up','Remarks'],
- 'Lead & Follow-up CRM (Lite)':['Lead ID','Name','Phone','Lead Source','Status','Follow-up Date','Call Notes','Executive','Conversion','Remarks'],
- 'Customer Service & Support Ticket CRM':['Ticket ID','Customer','Phone','Complaint','Priority','Assigned Engineer','SLA Due','Resolution Status','Resolution Notes'],
- 'Analytical / Custom CRM':['Record ID','Name','Category','Value','Status','Owner','Date','KPI','Notes']};
-function selectedType(){return document.querySelector('input[name="crmType"]:checked').value}
-function renderColumns(){const list=document.getElementById('columnList');list.innerHTML='';defaults[selectedType()].concat(extraColumns).forEach((col,i)=>{const d=document.createElement('div');d.className='column-item';d.innerHTML='<label><input type="checkbox" checked data-column="'+escapeAttr(col)+'"> '+escapeHtml(col)+'</label><span></span>';if(extraColumns.includes(col)){d.querySelector('span').innerHTML='<button type="button" class="remove-col" data-remove="'+escapeAttr(col)+'">×</button>'}list.appendChild(d)})}
-let extraColumns=[];let extraSources=[];
-function renderSamples(){const box=document.getElementById('samples');if(!box.children.length) for(let i=0;i<4;i++){let row=document.createElement('div');row.className='sample-row';row.style.marginBottom='7px';row.innerHTML='<input class="sample" placeholder="Product / service '+(i+1)+'">';box.appendChild(row)}}
-renderSamples();renderColumns();
-function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":"&#39;",'"':'&quot;'}[c]))}function escapeAttr(s){return escapeHtml(s)}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
-function setStep(n){state.step=n;document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',+s.dataset.section===n));document.getElementById('progressLabel').textContent=n===5?'Smart Output Engine':('Section '+n+' of 5');document.getElementById('progressText').textContent=(n*20)+'%';document.getElementById('progressBar').style.width=(n*20)+'%';document.getElementById('prevBtn').disabled=n===1;document.getElementById('nextBtn').style.display=n===5?'none':'inline-block';if(n===5)buildOutput();window.scrollTo({top:0,behavior:'smooth'})}
-function validate(){if(state.step===1){const c=document.getElementById('company');if(!c.value.trim()){c.classList.add('invalid');c.nextElementSibling.style.display='block';c.focus();return false}c.classList.remove('invalid');c.nextElementSibling.style.display='none'}return true}
-document.getElementById('nextBtn').onclick=()=>{if(validate())setStep(Math.min(5,state.step+1))};document.getElementById('prevBtn').onclick=()=>setStep(Math.max(1,state.step-1));
-document.querySelectorAll('.crm-card').forEach(card=>card.onclick=()=>{document.querySelectorAll('.crm-card').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');card.querySelector('input').checked=true;extraColumns=[];renderColumns()});
-document.querySelectorAll('.swatch').forEach(s=>s.onclick=()=>{document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('selected'));s.classList.add('selected');state.theme={name:s.dataset.name,color:s.dataset.color};document.getElementById('customHex').value=s.dataset.color;applyTheme(s.dataset.color)});
-document.getElementById('customHex').oninput=e=>{const v=e.target.value;if(/^#[0-9a-f]{6}$/i.test(v)){state.theme={name:'Custom Hex',color:v};applyTheme(v)}};function applyTheme(c){document.documentElement.style.setProperty('--brand',c)}
-document.getElementById('addSource').onclick=()=>{const i=document.getElementById('customSource'),v=i.value.trim();if(v&&!extraSources.includes(v)){extraSources.push(v);const l=document.createElement('label');l.className='check';l.innerHTML='<input type="checkbox" value="'+escapeAttr(v)+'" checked> '+escapeHtml(v);document.getElementById('extraSources').appendChild(l);i.value=''}};
-document.getElementById('addColumn').onclick=()=>{const i=document.getElementById('customColumn'),v=i.value.trim();if(v&&!extraColumns.includes(v)&&!defaults[selectedType()].includes(v)){extraColumns.push(v);i.value='';renderColumns()}};
-document.getElementById('columnList').onclick=e=>{if(e.target.matches('[data-remove]')){extraColumns=extraColumns.filter(x=>x!==e.target.dataset.remove);renderColumns()}};
-document.getElementById('clearSamples').onclick=()=>{if(confirm('Clear all sample products/services?'))document.querySelectorAll('.sample').forEach(i=>i.value='')};
-function dataObject(){const cols=[...document.querySelectorAll('#columnList input[data-column]')].filter(i=>i.checked).map(i=>i.dataset.column);const sources=[...document.querySelectorAll('#leadSources input:checked,#extraSources input:checked')].map(i=>i.value);return{company:document.getElementById('company').value.trim(),industry:document.getElementById('industry').value,theme:state.theme,crmType:selectedType(),mdName:document.getElementById('mdName').value.trim(),managerName:document.getElementById('managerName').value.trim(),directorName:document.getElementById('directorName').value.trim(),team:document.getElementById('team').value.trim(),leadSources:sources,columns:cols,samples:[...document.querySelectorAll('.sample')].map(i=>i.value.trim()).filter(Boolean),rules:document.getElementById('rules').value.trim(),generatedAt:new Date().toISOString()}}
-function txtSummary(d){return `CRM REQUIREMENT BLUEPRINT\n=========================\nCompany: ${d.company}\nIndustry: ${d.industry}\nBrand Theme: ${d.theme.name} (${d.theme.color})\nCRM Type: ${d.crmType}\nGenerated: ${d.generatedAt}\n\nLEADERSHIP\nMD / Owner: ${d.mdName||'-'}\nReporting Manager: ${d.managerName||'-'}\nDirector: ${d.directorName||'-'}\nTeam: ${d.team||'-'}\n\nLEAD SOURCES\n${d.leadSources.join(', ')||'-'}\n\nTRACKER COLUMNS\n${d.columns.join(', ')||'-'}\n\nSAMPLE PRODUCTS / SERVICES\n${d.samples.join(', ')||'-'}\n\nSPECIAL BUSINESS RULES\n${d.rules||'-'}\n`}
-function masterPrompt(d){return `Act as a Principal Enterprise Software Architect with 50 years of experience. Build a 100% bug-free, production-ready, standalone single-file HTML Desktop CRM Application customized for the client requirements below. Do not remove the master architecture.
 
-STRICT MASTER CRM RULES:
-1. Build a 5-tab interconnected desktop CRM: 01 Team CRM Tracker; 02 Daily Management Report; 03 Daily History Log; 04 Weekly & Monthly Summary; 05 Settings & Quick Rules.
-2. Keep always-visible toolbar buttons: Add New Entry, Export CSV, Export Excel (.xls), Backup (.json), Restore (.json), and Clear Sample Data (Start Fresh).
-3. Add live search and filters, inline dropdown editing, row delete, automatic Entry IDs, date/report calculations, persistent localStorage under a unique company-based key, and exactly 4 realistic dummy records tailored to the client.
-4. Include clean single-file CSS/JS with zero external dependencies and offline desktop readiness.
+  <script>
+    const SERVICES_CONFIG = [
+      {
+        id: "desktop-crm", name: "Custom Offline Desktop CRM",
+        formats: ["5-Tab Enterprise Sales CRM", "Lead & Follow-Up Tracker", "Customer & Inventory CRM", "Custom Workflow CRM"],
+        questions: [
+          { label: "Team Size", type: "text", placeholder: "Number of users" },
+          { label: "Required Reports", type: "checkbox", options: ["Daily MD Report", "Weekly Scorecard", "Excel Export"] }
+        ]
+      },
+      {
+        id: "business-dashboards", name: "Interactive Business Dashboards",
+        formats: ["Sales & Revenue KPI Dashboard", "Expense & Profit Financial Dashboard", "Inventory & Stock Tracker", "HR & Operations Scorecard"],
+        questions: [
+          { label: "Data Source", type: "checkbox", options: ["Excel", "CSV", "Tally", "Manual"] },
+          { label: "Key Charts Needed", type: "textarea", placeholder: "List charts, KPIs, or visualizations" }
+        ]
+      },
+      {
+        id: "data-analytics", name: "Data Analytics & Insights",
+        formats: ["Sales Trend & Forecasting", "Customer Segmentation", "Profit & Loss Variance Analysis", "Survey / Market Research Summary"],
+        questions: [
+          { label: "Input File Format", type: "text", placeholder: "Excel, CSV, survey tool, database, etc." },
+          { label: "Desired Output Report", type: "textarea", placeholder: "Describe the report or insight needed" }
+        ]
+      },
+      {
+        id: "excel-automation", name: "Excel Data Cleaning & Automation",
+        formats: ["Remove Duplicates & Fix Formatting", "Merge Multiple Excel/CSV Files", "Automated Formulas & VLOOKUP/XLOOKUP", "One-Click Macro Report Template"],
+        questions: [
+          { label: "Approximate Row Count", type: "text", placeholder: "e.g. 25,000 rows" },
+          { label: "Current Pain Point", type: "textarea", placeholder: "What is slow, repetitive, or broken?" }
+        ]
+      },
+      {
+        id: "ai-workflows", name: "AI Workflows & Custom Prompt Systems",
+        formats: ["Custom AI Assistant / SOP Builder", "Automated Client Reply System", "Document / Data Summarizer Workflow"],
+        questions: [
+          { label: "Target Department", type: "text", placeholder: "Sales, operations, support, finance, etc." },
+          { label: "Tools Currently Used", type: "textarea", placeholder: "List apps, platforms, or AI tools" }
+        ]
+      },
+      {
+        id: "sales-tally", name: "Sales & Tally Data Operations",
+        formats: ["Tally Voucher / Ledger Reconciliation", "Invoice & Quotation Formatting", "CRM / Catalogue Data Entry"],
+        questions: [
+          { label: "Monthly Volume", type: "text", placeholder: "Entries, invoices, ledgers, or records" },
+          { label: "Accuracy / Deadline Needs", type: "textarea", placeholder: "Required accuracy and delivery deadline" }
+        ]
+      }
+    ];
 
-CLIENT REQUIREMENTS:
-${txtSummary(d)}
+    const state = { selectedId: "", selectedFormat: "", dynamicNotice: "" };
 
-IMPLEMENTATION RULES:
-- Use the selected CRM architecture as the primary workflow.
-- Use the supplied columns and lead sources exactly unless a field is technically unsafe; explain substitutions in code comments.
-- Apply the selected brand theme and industry-specific terminology.
-- Preload only the 4 sample records using the supplied products/services.
-- Make every tab work, calculate reports, preserve data, and validate new entries.
-- Produce the complete standalone HTML file, ready to save and open directly in a browser.`}
-let currentPrompt='',currentSummary='';function buildOutput(){const d=dataObject();currentSummary=txtSummary(d);currentPrompt=masterPrompt(d);document.getElementById('summaryPreview').textContent=currentSummary}
-document.getElementById('downloadBtn').onclick=()=>{if(!currentSummary)buildOutput();const d=dataObject();const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(d.company||'client')+'-CRM-Requirements.json';a.click();URL.revokeObjectURL(a.href)};
-document.getElementById('copyBtn').onclick=async()=>{if(!currentPrompt)buildOutput();try{await navigator.clipboard.writeText(currentPrompt);toast('Copilot-ready prompt copied')}catch(e){const ta=document.createElement('textarea');ta.value=currentPrompt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Copilot-ready prompt copied')}};
-document.getElementById('whatsappBtn').onclick=()=>{if(!currentSummary)buildOutput();window.open('https://wa.me/?text='+encodeURIComponent(currentSummary),'_blank','noopener')};
-})();
-</script>
+    function slug(value) {
+      return String(value || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function decodeBase64Json(value) {
+      let decoded = atob(value.replace(/-/g, "+").replace(/_/g, "/"));
+      decoded = decodeURIComponent(Array.from(decoded, c => "%" + c.charCodeAt(0).toString(16).padStart(2, "0")).join(""));
+      return JSON.parse(decoded);
+    }
+
+    function parseDynamicPayload(raw) {
+      if (!raw) return null;
+      const trimmed = raw.trim();
+      try { return JSON.parse(trimmed); } catch (_) {}
+      try { return decodeBase64Json(trimmed); } catch (_) {}
+      return null;
+    }
+
+    function normalizePayload(payload) {
+      if (!payload) return [];
+      const list = Array.isArray(payload) ? payload :
+        Array.isArray(payload.skills) ? payload.skills :
+        Array.isArray(payload.services) ? payload.services :
+        typeof payload === "object" ? Object.entries(payload).map(([key, value]) => {
+          if (typeof value === "string") return { name: key, formats: [value] };
+          return { ...value, name: value.name || value.title || value.label || key };
+        }) : [];
+      return list;
+    }
+
+    function normalizeDynamicSkill(item, index) {
+      if (typeof item === "string") item = { name: item };
+      if (!item || typeof item !== "object") return null;
+      const name = item.name || item.title || item.label || item.skill || item.service;
+      if (!name) return null;
+      const rawFormats = item.formats || item.subformats || item.subFormats || item.options || item.types || [];
+      let formats = Array.isArray(rawFormats) ? rawFormats : typeof rawFormats === "string" ? rawFormats.split("|").map(x => x.trim()).filter(Boolean) : [];
+      formats = formats.map(format => typeof format === "string" ? format : format.name || format.title || format.label).filter(Boolean);
+      if (!formats.length) formats = ["Custom " + name];
+
+      const rawQuestions = item.questions || item.fields || item.requirements || [];
+      let questions = Array.isArray(rawQuestions) ? rawQuestions : typeof rawQuestions === "string" ? rawQuestions.split("|").map(x => x.trim()).filter(Boolean) : [];
+      questions = questions.map((question, qIndex) => {
+        if (typeof question === "string") return { label: question, type: "text", placeholder: "Enter " + question.toLowerCase() };
+        const label = question.label || question.name || question.title || "Requirement " + (qIndex + 1);
+        const options = question.options || question.choices || question.values;
+        let type = String(question.type || "").toLowerCase();
+        if (Array.isArray(options)) type = type === "radio" ? "radio" : "checkbox";
+        if (type === "textarea" || type === "text" || type === "select") { /* keep */ }
+        else type = "text";
+        return { label, type, options: Array.isArray(options) ? options : [], placeholder: question.placeholder || "Enter " + label.toLowerCase() };
+      });
+
+      return {
+        id: slug(item.id || item.key || item.slug || name) + "-dynamic-" + index,
+        name,
+        formats,
+        questions,
+        dynamic: true
+      };
+    }
+
+    function mergeServices() {
+      const params = new URLSearchParams(location.search);
+      const merged = SERVICES_CONFIG.map(service => ({ ...service }));
+      const rawDynamic = params.get("skills_data") || params.get("custom_skills");
+      const payload = parseDynamicPayload(rawDynamic);
+      const dynamicSkills = normalizePayload(payload).map(normalizeDynamicSkill).filter(Boolean);
+
+      dynamicSkills.forEach(skill => {
+        const existing = merged.find(service => slug(service.name) === slug(skill.name) || service.id === slug(skill.id));
+        if (existing) {
+          skill.formats.forEach(format => { if (!existing.formats.includes(format)) existing.formats.push(format); });
+          skill.questions.forEach(question => {
+            if (!existing.questions.some(current => current.label === question.label)) existing.questions.push(question);
+          });
+        } else {
+          merged.push(skill);
+        }
+      });
+
+      const serviceParam = params.get("service");
+      if (serviceParam) {
+        const target = merged.find(service =>
+          slug(service.name) === slug(serviceParam) ||
+          slug(service.id) === slug(serviceParam)
+        );
+        if (target) state.selectedId = target.id;
+      }
+      return merged;
+    }
+
+    const services = mergeServices();
+    const grid = document.getElementById("serviceGrid");
+    const icons = ["▦", "▥", "↗", "A", "✦", "₹"];
+
+    function renderCards() {
+      grid.innerHTML = "";
+      services.forEach((service, index) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "service-card";
+        card.dataset.id = service.id;
+        card.innerHTML = `<span class="service-icon">${icons[index] || "◆"}</span><strong>${escapeHtml(service.name)}</strong><small>${escapeHtml(service.formats.length)} formats available</small>`;
+        card.addEventListener("click", () => selectService(service.id));
+        grid.appendChild(card);
+      });
+    }
+
+    function selectService(id) {
+      state.selectedId = id;
+      state.selectedFormat = "";
+      document.querySelectorAll(".service-card").forEach(card => card.classList.toggle("selected", card.dataset.id === id));
+      document.getElementById("toStep2").disabled = false;
+    }
+
+    function selectedService() {
+      return services.find(service => service.id === state.selectedId);
+    }
+
+    function renderStep2() {
+      const service = selectedService();
+      if (!service) return;
+      document.getElementById("selectedTitle").textContent = service.name;
+      const formats = document.getElementById("formatOptions");
+      formats.innerHTML = "";
+      service.formats.forEach(format => {
+        const label = document.createElement("label");
+        label.className = "option";
+        label.innerHTML = `<input type="radio" name="format" value="${escapeAttr(format)}"><span>${escapeHtml(format)}</span>`;
+        label.querySelector("input").addEventListener("change", () => {
+          state.selectedFormat = format;
+          updateToStep3();
+        });
+        formats.appendChild(label);
+      });
+      const questionHost = document.getElementById("skillQuestions");
+      questionHost.innerHTML = "";
+      service.questions.forEach((question, index) => {
+        const field = document.createElement("div");
+        field.className = "field";
+        const safeId = "skill-" + index;
+        if (question.type === "textarea") {
+          field.innerHTML = `<label for="${safeId}">${escapeHtml(question.label)}</label><textarea id="${safeId}" data-question="${escapeAttr(question.label)}" placeholder="${escapeAttr(question.placeholder || "")}"></textarea>`;
+        } else if (question.type === "checkbox" && question.options?.length) {
+          field.innerHTML = `<label>${escapeHtml(question.label)}</label><div class="pill-grid">${question.options.map((option, optionIndex) =>
+            `<label class="option"><input type="checkbox" id="${safeId}-${optionIndex}" data-question="${escapeAttr(question.label)}" value="${escapeAttr(option)}"><span>${escapeHtml(option)}</span></label>`
+          ).join("")}</div>`;
+        } else if (question.type === "radio" && question.options?.length) {
+          field.innerHTML = `<label>${escapeHtml(question.label)}</label><div class="pill-grid">${question.options.map((option, optionIndex) =>
+            `<label class="option"><input type="radio" name="${safeId}" data-question="${escapeAttr(question.label)}" value="${escapeAttr(option)}"><span>${escapeHtml(option)}</span></label>`
+          ).join("")}</div>`;
+        } else {
+          field.innerHTML = `<label for="${safeId}">${escapeHtml(question.label)}</label><input id="${safeId}" data-question="${escapeAttr(question.label)}" placeholder="${escapeAttr(question.placeholder || "")}">`;
+        }
+        questionHost.appendChild(field);
+      });
+      updateToStep3();
+    }
+
+    function updateToStep3() {
+      document.getElementById("toStep3").disabled = !state.selectedFormat;
+    }
+
+    function showStep(step) {
+      document.querySelectorAll(".step").forEach(element => element.classList.toggle("active", Number(element.dataset.step) === step));
+      document.querySelectorAll(".progress span").forEach((element, index) => element.classList.toggle("active", index < step));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function validateStep3() {
+      const name = document.getElementById("clientName");
+      const language = document.getElementById("language");
+      const timeline = document.getElementById("timeline");
+      if (!name.value.trim()) { name.focus(); return false; }
+      if (!language.value) { language.focus(); return false; }
+      if (!timeline.value.trim()) { timeline.focus(); return false; }
+      return true;
+    }
+
+    function collectSkillAnswers() {
+      const answers = [];
+      document.querySelectorAll("#skillQuestions [data-question]").forEach(element => {
+        if (element.type === "checkbox") {
+          if (element.checked) {
+            const label = element.dataset.question;
+            const existing = answers.find(item => item.label === label);
+            if (existing) existing.value.push(element.value);
+            else answers.push({ label, value: [element.value] });
+          }
+        } else if (element.type === "radio") {
+          if (element.checked) answers.push({ label: element.dataset.question, value: element.value });
+        } else if (element.value.trim()) {
+          answers.push({ label: element.dataset.question, value: element.value.trim() });
+        }
+      });
+      return answers;
+    }
+
+    function generateBrief() {
+      if (!validateStep3()) return;
+      const service = selectedService();
+      const answers = collectSkillAnswers();
+      const answerLines = answers.map(answer =>
+        "  • " + answer.label + ": " + (Array.isArray(answer.value) ? answer.value.join(", ") : answer.value)
+      );
+      const brief = [
+        "PROJECT BRIEF",
+        "================",
+        "",
+        "Client Name / Company: " + document.getElementById("clientName").value.trim(),
+        "Preferred Language: " + document.getElementById("language").value,
+        "Timeline: " + document.getElementById("timeline").value.trim(),
+        "",
+        "Service: " + service.name,
+        "Selected Format: " + state.selectedFormat,
+        "",
+        "Skill-Specific Details:",
+        ...(answerLines.length ? answerLines : ["  • No additional details provided"]),
+        "",
+        "Additional Notes:",
+        document.getElementById("notes").value.trim() || "None",
+        "",
+        "Assurance:",
+        "✅ 0%-Loss Assurance: Exact Scope Confirmation + 7-Day Free Post-Delivery Support & Data Backup Included"
+      ].join("\n");
+      document.getElementById("briefOutput").textContent = brief;
+      document.getElementById("copyStatus").textContent = "";
+      showStep(4);
+    }
+
+    async function copyBrief() {
+      const text = document.getElementById("briefOutput").textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (_) {
+        const area = document.createElement("textarea");
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+      document.getElementById("copyStatus").textContent = "Copied — ready to send!";
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]);
+    }
+    function escapeAttr(value) { return escapeHtml(value); }
+
+    renderCards();
+    document.getElementById("toStep2").addEventListener("click", () => { renderStep2(); showStep(2); });
+    document.getElementById("toStep3").addEventListener("click", () => showStep(3));
+    document.getElementById("generateBrief").addEventListener("click", generateBrief);
+    document.getElementById("copyBrief").addEventListener("click", copyBrief);
+    document.querySelectorAll("[data-back]").forEach(button => button.addEventListener("click", () => showStep(Number(button.dataset.back))));
+
+    if (state.selectedId) {
+      selectService(state.selectedId);
+      renderStep2();
+    }
+  </script>
 </body>
 </html>
